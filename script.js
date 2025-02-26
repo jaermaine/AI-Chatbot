@@ -4,6 +4,7 @@ const chatInput = document.querySelector("#chat-input");
 const refreshButton = document.querySelector("#refresh-button");
 const sendButton = document.querySelector("#send-button");
 const chatContainer = document.querySelector(".chat-container");
+const promptsContainer = document.querySelector(".prompts-container");
 
 const getChatResponse = async() => {
     const userText = chatInput.value;
@@ -58,6 +59,7 @@ const handleAPI = () => {
 
     if(!userText) return;
 
+    clearSuggestions();
     getChatResponse();
     clearInput();
 
@@ -72,6 +74,10 @@ const handleAPI = () => {
     `;
 
     chatContainer.appendChild(chatBubble);
+}
+
+function clearSuggestions(){
+    promptsContainer.innerHTML = '';
 }
 
 function clearInput(){
@@ -96,3 +102,41 @@ refreshButton.addEventListener("click", function refreshClick(){
     //clear chat history
     chatHistory = [];
 })
+
+async function addSuggestedPrompts(){
+    const suggest_prompt = "Give me 4 prompts that can be used to an AI Chatbot, separated by a |.";
+
+    const suggested_result = await model.generateContent(suggest_prompt);
+    const suggested_prompts = suggested_result.response.text();
+
+    const split_prompts = suggested_prompts.split("|");
+
+    //sanity check
+    console.log("Suggested Result: ", suggested_result);
+    console.log("Suggested Prompts: ", suggested_prompts);
+    console.log("Split Prompts: ", split_prompts);
+
+    const suggestedPrompts = document.createElement("div");
+    suggestedPrompts.classList.add("suggested-prompts");
+
+    for (let i = 0; i < split_prompts.length; i++){
+        const prompt_suggestion = document.createElement("div");
+        prompt_suggestion.classList.add("prompt-button");
+        prompt_suggestion.innerHTML = `
+        <div class="suggested-prompts">
+            <p>
+                ${split_prompts[i]}
+            </p>
+        </div> 
+        `;
+        prompt_suggestion.addEventListener("click", () => {
+            chatInput.value = split_prompts[i];
+            handleAPI();
+        });
+        promptsContainer.appendChild(prompt_suggestion);
+    }
+
+    chatContainer.appendChild(promptsContainer);
+}
+
+document.addEventListener("DOMContentLoaded", addSuggestedPrompts);
