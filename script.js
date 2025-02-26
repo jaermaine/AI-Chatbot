@@ -76,6 +76,10 @@ const handleAPI = () => {
     chatContainer.appendChild(chatBubble);
 }
 
+function clearChatHistory(){
+    chatHistory.length = 0;
+}
+
 function clearSuggestions(){
     promptsContainer.innerHTML = '';
 }
@@ -99,10 +103,8 @@ refreshButton.addEventListener("click", function refreshClick(){
     chatContainer.innerHTML = '';
     clearInput();
     clearSuggestions();
+    clearChatHistory();
     addSuggestedPrompts();
-
-    //clear chat history
-    chatHistory = [];
 })
 
 async function addSuggestedPrompts(){
