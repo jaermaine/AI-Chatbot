@@ -58,8 +58,8 @@ const handleAPI = () => {
 
     if(!userText) return;
 
-    clearInput();
     getChatResponse();
+    clearInput();
 
     const chatBubble = document.createElement("div");
     chatBubble.classList.add("chat-content");
