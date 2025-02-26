@@ -1,10 +1,12 @@
-import {model, chatHistory} from './main-module.js';
+import {model, chatHistory, genAI} from './main-module.js';
 
 const chatInput = document.querySelector("#chat-input");
 const refreshButton = document.querySelector("#refresh-button");
 const sendButton = document.querySelector("#send-button");
+const avatarImage = document.querySelector("#bocchi-avatar");
 const chatContainer = document.querySelector(".chat-container");
 const promptsContainer = document.querySelector(".prompts-container");
+const images = ["img/bocchi-the-spark.png", "img/bocchi-the-gloom.png", "img/bocchi-the-meh.png", "img/bocchi-the-worried-maybe.png", "img/bocchi-the-spark.png",];
 
 const getChatResponse = async() => {
     const userText = chatInput.value;
@@ -13,6 +15,7 @@ const getChatResponse = async() => {
     console.log("User Input: ", userText);
 
     const paragraphElement = document.createElement("div");
+    paragraphElement.classList.add("gemini-response");
 
     try{
         const parts = chatHistory.concat(userText);
@@ -30,28 +33,28 @@ const getChatResponse = async() => {
 
         const formattedResponse = formatResponse(response);
 
+        console.log("Formatted Response: ", formattedResponse);
+
+        const paragraphs = formattedResponse.split('\n');
+
+        console.log("Paragraphs: ", paragraphs);
+
         //sanity check
         console.log("Model output (string): ", response);
         console.log("Chat History: ", chatHistory);
 
-        paragraphElement.classList.add("gemini-response")
-        paragraphElement.innerHTML = `
-            <div class="chat-body-inner right">
-                <p>
-                    ${formattedResponse}
-                </p>
-            </div> 
-            `;
+        appendParagraphs(paragraphs, paragraphElement);
     }catch(Exception){
         console.error("Error fetching response: ", Exception);
         paragraphElement.classList.add("gemini-response");
         paragraphElement.innerHTML = `
             <div class="chat-body-inner right">
                 <p>
-                    Something went wrong.
+                    Something went wrong. Click New Chat to start again.
                 </p>
             </div> 
             `;
+        disableInput();
     }
     chatContainer.appendChild(paragraphElement);
 }
@@ -61,6 +64,7 @@ const handleAPI = () => {
 
     if(!userText) return;
 
+    disableInput(); 
     clearSuggestions();
     getChatResponse();
     clearInput();
@@ -78,6 +82,49 @@ const handleAPI = () => {
     chatContainer.appendChild(chatBubble);
 }
 
+async function appendParagraphs(paragraphs, paragraphElement) {
+    for (let i = 0; i < paragraphs.length; i++) {
+
+        if (paragraphs[i].length === 0) continue;
+
+        const typingIndicator = document.createElement("div");
+        typingIndicator.classList.add("typing");
+        typingIndicator.innerHTML = `
+        <div class="half light">
+            <div class="typing">
+                <span class="circle bouncing"></span>
+                <span class="circle bouncing"></span>
+                <span class="circle bouncing"></span>
+            </div>
+        </div>
+        `;
+        paragraphElement.appendChild(typingIndicator); // Append the typing indicator
+
+        await sleep(3);
+        typingIndicator.remove();
+
+        const chatBodyInner = document.createElement("div");
+        chatBodyInner.classList.add("chat-body-inner", "right");
+
+        const paragraph = document.createElement("p");
+        paragraph.innerHTML = paragraphs[i];
+
+        chatBodyInner.appendChild(paragraph);
+
+        paragraphElement.appendChild(chatBodyInner); // Append after the delay
+        let image_number = Math.floor(Math.random() * 4);
+
+        avatarImage.src = images[image_number];
+        avatarImage.alt = "Bocchi speaking";
+
+        await sleep(1);
+        
+        avatarImage.src = images[0];
+        avatarImage.alt = "Bocchi default";
+    }
+    enableInput();
+}
+
 function clearChatHistory(){
     chatHistory.length = 0;
 }
@@ -88,6 +135,18 @@ function clearSuggestions(){
 
 function clearInput(){
     chatInput.value = "";
+}
+
+function disableInput(){
+    chatInput.setAttribute("disabled", true);
+}
+
+function enableInput(){
+    chatInput.removeAttribute("disabled");
+}
+
+function sleep(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
 sendButton.addEventListener("click", handleAPI);
@@ -111,7 +170,7 @@ refreshButton.addEventListener("click", function refreshClick(){
 
 async function addSuggestedPrompts(){
 
-    const suggest_prompt = "Suggges me 4 initial prompts without having introductions, that can be used to an AI Chatbot, separated by a |.";
+    const suggest_prompt = "Sugggest me ONLY AND AT MAX 4 initial prompts without having introductions, that can be used to an AI Chatbot that can be related to various topics such as computer science, mathematics, statistics, engineering, separated by a |.";
 
     const suggested_result = await model.generateContent(suggest_prompt);
     const suggested_prompts = suggested_result.response.text();
@@ -162,8 +221,7 @@ function formatResponse(response){
         .replace(/__(.*?)__/g, "<u>$1</u>")
         .replace(/~~(.*?)~~/g, "<del>$1</del>")
         .replace(/`(.*?)`/g, "<code>$1</code>")
-        .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>")
-        .replace(/\n/g, "<br>");
+        .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>");
 
     return formattedText;
 }
