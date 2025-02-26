@@ -1,4 +1,4 @@
-import {model} from './main-module.js';
+import {model, chatHistory} from './main-module.js';
 
 const chatInput = document.querySelector("#chat-input");
 const refreshButton = document.querySelector("#refresh-button");
@@ -14,15 +14,22 @@ const getChatResponse = async() => {
     const paragraphElement = document.createElement("div");
 
     try{
-        const result = await model.generateContent(userText);
+        const parts = chatHistory.concat(userText);
+        const result = await model.generateContent(parts);
 
         //sanity check
         console.log("Model output: ", result);
+        console.log("Chat History: ", chatHistory);
+        console.log("chatHistory concatenated: ", parts);
 
         const response = await result.response.text();
 
+        //handle history of user input and model response 
+        chatHistory.push(userText, response);
+
         //sanity check
         console.log("Model output (string): ", response);
+        console.log("Chat History: ", chatHistory);
 
         paragraphElement.classList.add("gemini-response")
         paragraphElement.innerHTML = `
@@ -85,4 +92,7 @@ chatInput.addEventListener("keydown", (e) =>{
 refreshButton.addEventListener("click", function refreshClick(){
     chatContainer.innerHTML = '';
     clearInput();
+
+    //clear chat history
+    chatHistory = [];
 })
