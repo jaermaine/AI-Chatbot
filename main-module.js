@@ -13,5 +13,6 @@ const model = genAI.getGenerativeModel({
     systemInstruction: 'You are named Jared',
 });
 
+const chatHistory = [];
 
-export {model};
+export {model, chatHistory};
