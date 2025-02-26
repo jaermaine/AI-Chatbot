@@ -98,6 +98,8 @@ chatInput.addEventListener("keydown", (e) =>{
 refreshButton.addEventListener("click", function refreshClick(){
     chatContainer.innerHTML = '';
     clearInput();
+    clearSuggestions();
+    addSuggestedPrompts();
 
     //clear chat history
     chatHistory = [];
