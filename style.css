@@ -1,0 +1,240 @@
+html * {
+    font-family: "Segoe UI Historic";
+  }
+  
+  .hidden-hr {
+    visibility: hidden;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 900px;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    border: 1px solid rgb(0, 0, 0);
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0695ff;
+    font-weight: bold;
+  }
+  
+  .header-container {
+    color: white;
+  }
+  
+  .sidebar-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    border-right: 1px solid #d1d5db;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 790px;
+    overflow-y: auto;
+  }
+  
+  .side-header {
+    padding: 2px;
+    margin-bottom: 10px;
+  }
+  
+  .chat-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #0695ff;
+    padding: 2px;
+    margin-bottom: 10px;
+    height: 100px;
+    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
+    align-items: center;
+  }
+  
+  .chat-header-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #e0e0e0;
+  }
+  
+  .chat-header-name i {
+    margin-left: 10px;
+    padding: 10px;
+    font-size: 30px;
+  }
+  
+  .chat-header-name-text {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+  }
+  
+  .chat-header-name-text h3 {
+    color: white;
+    margin: 0;
+  }
+  
+  .chat-header-name-text a {
+    color: #cccecf;
+    margin: 0;
+  }
+  
+  .chat-header-buttons .right {
+    margin-right: 20px;
+    font-size: 25px;
+    color: #e0e0e0;
+  }
+  
+  .search-container {
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  
+  .chatbot-container {
+    display: flex;
+    flex-direction: column; /* Chat container stacks vertically */
+    height: 100vh; /* Or whatever height you want */
+    max-height: 680px; /* Or whatever max height you want */
+    width: 100%; /* Or whatever width you want */
+    border: 1px solid #ccc; /* Optional border */
+  }
+  
+  .chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .chat-container div{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .message {
+    display: flex;
+    margin-bottom: 10px;
+    max-width: 70%;
+  }
+  
+  .chat-content {
+    align-self: flex-end;
+    max-width: 70%;
+  }
+  
+  .gemini-response {
+    align-self: flex-start;
+    max-width: 70%;
+  }
+  
+  .chat-body-inner {
+    padding: 10px;
+    border-radius: 12px;
+    word-wrap: break-word;
+  }
+  
+  .chat-body-inner.left {
+    background-color: #0695ff;
+    color: white;
+  }
+  
+  .chat-body-inner.right {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .typing-container {
+    display: flex;
+    padding: 10px;
+  }
+  
+  .typing-textarea {
+    display: flex; /* Textarea takes up available space */
+    border: 1px solid #ccc;
+    width: 100%; /* Textarea takes up available space */
+    padding: 5px;
+    border-radius: 5px;
+    resize: none; /* Prevents resizing of the textarea */
+    overflow: hidden; /* Prevents scrollbars in the text area */
+  }
+  
+  #refresh-button {
+    background-color: #c93636; /* Green button */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  #chat-input {
+    border: 2px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 100%;
+    resize: none;
+  }
+  
+  #send-button {
+    background-color: #4caf50; /* Green button */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+  .chat-body-inner p {
+    margin: 0;
+  }
+  
+  .chat-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .chat-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  
+  .chat-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  

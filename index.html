@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai":"https://esm.run/@google/generative-ai"
+            }
+        }
+    </script>
+    <title>AI Chatbot</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-container">
+                <h1>AI Chatbot</h1>
+            </div>
+        </header>
+        
+
+        <div class="main-content">
+            <aside class="sidebar-container">
+                <div class="search-container">
+                    <a class="side-header">Chats</a>
+                    <hr class="hidden-hr">
+                    <input class="search-bar" id="search" placeholder="Search" type="text"/>
+                </div>
+            </aside>
+
+            <div class="chat-section">
+
+                <div class="chat-header">
+                    <div class="chat-header-name">
+                        <i class="icon fa fa-user-o" aria-hidden="true"></i>
+                        <div class="chat-header-name-text">
+                            <h3>Chat</h3>
+                            <a>Active Now</a>
+                        </div>
+                    </div>
+
+                    <div class="chat-header-buttons">
+                        <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                
+                <!-- -->
+                <div class="chatbot-container">
+                    
+                    <!-- -->
+                    <div class="chat-container">
+                        
+                    </div>
+                    
+                    <!-- -->
+                    <div class="typing-container">
+                        <div class="typing-textarea">
+                            <button id="refresh-button">New Chat</button>
+                            <textarea id="chat-input" spellcheck="false" placeholder="Enter your message here..." required></textarea>
+                            <button id="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="main-module.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
