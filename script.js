@@ -28,6 +28,8 @@ const getChatResponse = async() => {
         //handle history of user input and model response 
         chatHistory.push(userText, response);
 
+        const formattedResponse = formatResponse(response);
+
         //sanity check
         console.log("Model output (string): ", response);
         console.log("Chat History: ", chatHistory);
@@ -36,7 +38,7 @@ const getChatResponse = async() => {
         paragraphElement.innerHTML = `
             <div class="chat-body-inner right">
                 <p>
-                    ${response}
+                    ${formattedResponse}
                 </p>
             </div> 
             `;
@@ -108,7 +110,8 @@ refreshButton.addEventListener("click", function refreshClick(){
 })
 
 async function addSuggestedPrompts(){
-    const suggest_prompt = "Give me 4 prompts that can be used to an AI Chatbot, separated by a |.";
+
+    const suggest_prompt = "Suggges me 4 initial prompts without having introductions, that can be used to an AI Chatbot, separated by a |.";
 
     const suggested_result = await model.generateContent(suggest_prompt);
     const suggested_prompts = suggested_result.response.text();
@@ -122,6 +125,8 @@ async function addSuggestedPrompts(){
 
     const suggestedPrompts = document.createElement("div");
     suggestedPrompts.classList.add("suggested-prompts");
+    
+    document.getElementById("chat-input").removeAttribute("disabled");
 
     for (let i = 0; i < split_prompts.length; i++){
         const prompt_suggestion = document.createElement("div");
@@ -143,4 +148,22 @@ async function addSuggestedPrompts(){
     chatContainer.appendChild(promptsContainer);
 }
 
-document.addEventListener("DOMContentLoaded", addSuggestedPrompts);
+document.addEventListener("DOMContentLoaded", function(){
+    addSuggestedPrompts();
+});
+
+function formatResponse(response){
+    response = response.replace(/^\*\s*/, "").trim();
+
+    let formattedText = response
+        .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/__(.*?)__/g, "<u>$1</u>")
+        .replace(/~~(.*?)~~/g, "<del>$1</del>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>")
+        .replace(/\n/g, "<br>");
+
+    return formattedText;
+}
