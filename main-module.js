@@ -1,5 +1,10 @@
 import {GoogleGenerativeAI} from "@google/generative-ai";
-import {gemini_api} from "./config.js";
+//create a config.js file and export the API key from there
+/* config.js example
+    const gemini-api = "API HERE";
+    export {gemini-api};
+*/
+import {gemini_api} from "./config.js"; 
 
 const API_KEY = gemini_api;
 const genAI = new GoogleGenerativeAI(API_KEY);
